@@ -1,0 +1,28 @@
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /readiness                --> hxextract/app/server/dapr.healthCheckHandler (3 handlers)
+[GIN-debug] POST   /export                   --> hxextract/app/server/dapr.exportHandler (3 handlers)
+[GIN-debug] GET    /ping                     --> hxextract/app/server/dapr.pingHandler (3 handlers)
+[GIN-debug] GET    /cmd                      --> hxextract/app/server/dapr.cmdHandler (3 handlers)
+[GIN] 2022/01/21 - 16:56:38 | 200 |       7.083µs |       127.0.0.1 | GET      "/readiness"
+{"level":"info","time":"2022-01-24 14:07:32.688","msg":"/readiness","status":200,"method":"GET","path":"/readiness","query":"","ip":"127.0.0.1","user-agent":"curl/7.77.0","errors":"","cost":0.0000635}
+{"level":"info","time":"2022-01-24 14:08:48.282","msg":"/readiness","status":200,"method":"GET","path":"/readiness","query":"","ip":"127.0.0.1","user-agent":"curl/7.77.0","errors":"","cost":0.000041208}
+{"level":"info","time":"2022-01-24 14:13:55.052","msg":"/readiness","status":200,"method":"GET","path":"/readiness","query":"","ip":"127.0.0.1","user-agent":"curl/7.77.0","errors":"","cost":0.000015666}
+{"level":"info","time":"2022-01-24 14:13:55.924","msg":"/readiness","status":200,"method":"GET","path":"/readiness","query":"","ip":"127.0.0.1","user-agent":"curl/7.77.0","errors":"","cost":0.000095916}
+{"level":"info","time":"2022-01-24 14:13:56.647","msg":"/readiness","status":200,"method":"GET","path":"/readiness","query":"","ip":"127.0.0.1","user-agent":"curl/7.77.0","errors":"","cost":0.000041583}
+2022-01-24 14:22:46.188	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000035625}
+2022-01-24 14:22:46.931	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000154417}
+2022-01-24 14:22:47.497	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000051667}
+2022-01-26 11:10:06.982	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000028625}
+2022-01-26 11:26:46.027	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000170375}
+2022-01-26 11:33:29.493	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "Go-http-client/1.1", "errors": "", "cost": 0.000040625}
+2022-01-26 11:33:52.202	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "Go-http-client/1.1", "errors": "", "cost": 0.00001725}
+2022-02-08 20:22:38.916	info	/ping	{"status": 200, "method": "GET", "path": "/ping", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000371875}
+2022-02-08 20:23:36.828	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.000097292}
+2022-02-08 21:16:27.702	info	/readiness	{"status": 200, "method": "GET", "path": "/readiness", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.026427}
+2022-02-09 11:28:57.682	info	/export	{"status": 200, "method": "POST", "path": "/export", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.057604417}
+2022-02-09 11:29:30.309	info	/export	{"status": 200, "method": "POST", "path": "/export", "query": "", "ip": "127.0.0.1", "user-agent": "curl/7.77.0", "errors": "", "cost": 0.039857375}
