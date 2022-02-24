@@ -118,7 +118,7 @@ func (d *dao) rows2sqls(fin pg.FinanceInfo, rows *sql.Rows) ([]*bytes.Buffer, er
 	rowLimit := config.GetMysql().RowLimit
 	endFlag := rows.Next() //提过endFlag判断是否还有数据
 	// next 在校验下面分支条件中用于判断是否到结尾
-	for strValue := ""; rows.Next(); rowCnt++ {
+	for strValue := ""; endFlag; rowCnt++ {
 		strValue, err = d.getRowValue(col, sqlFmtStr, rows)
 		endFlag = rows.Next()
 		if err != nil {

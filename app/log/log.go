@@ -22,7 +22,7 @@ var logConfig zapcore.EncoderConfig
 
 func init() {
 	logConfig = zapcore.EncoderConfig{
-		TimeKey:        "time",
+		TimeKey:        "logtime",
 		LevelKey:       "level",
 		NameKey:        "name",
 		CallerKey:      "line",

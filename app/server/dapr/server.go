@@ -66,16 +66,22 @@ func exportHandler(c *gin.Context) {
 	ep, err := getExportParas(c)
 
 	if err != nil {
-		log.Log.Error(fmt.Sprintf("export error: %s", err.Error()), zap.String("finname", ep.FinName))
+		log.Log.Error(fmt.Sprintf("export data failed: %s", err.Error()),
+			zap.String("finname", ep.FinName),
+			zap.String("type", "manual"))
 		c.String(400, err.Error())
 		return
 	}
 	err = svc.Export(ep.FinName, ep.QP)
 	if err != nil {
-		log.Log.Error(fmt.Sprintf("export error: %s", err.Error()), zap.String("finname", ep.FinName))
+		log.Log.Error(fmt.Sprintf("export data failed: %s", err.Error()),
+			zap.String("finname", ep.FinName),
+			zap.String("type", "manual"))
 		c.String(400, err.Error())
 	} else {
-		log.Log.Info(fmt.Sprintf("export success"), zap.String("finname", ep.FinName))
+		log.Log.Info(fmt.Sprintf("data successfully"),
+			zap.String("finname", ep.FinName),
+			zap.String("type", "manual"))
 		c.String(0, "export succeed")
 	}
 

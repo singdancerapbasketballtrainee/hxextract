@@ -2,17 +2,86 @@ package pg
 
 import (
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
-	"time"
+	"sync"
 )
 
 var (
 	cronTab = make(map[int]string) // 用于存储所有任务的定时任务时间
+	cronJob = &CronJob{
+		jobs: make(map[int]string),
+		lock: new(sync.RWMutex),
+	}
 )
 
+type CronJob struct {
+	jobs map[int]string
+	lock *sync.RWMutex
+}
+
+func (c *CronJob) Get(key int) string {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	return c.jobs[key]
+}
+
+func (c *CronJob) Set(key int, value string) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	c.jobs[key] = value
+}
+
+func (c *CronJob) Delete(key int) {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	delete(c.jobs, key)
+}
+
+func (c *CronJob) Len() int {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	return len(c.jobs)
+}
+
+func (c *CronJob) Keys() []int {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	keys := make([]int, 0, len(c.jobs))
+	for k := range c.jobs {
+		keys = append(keys, k)
+	}
+	return keys
+}
+
+func (c *CronJob) Values() []string {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	values := make([]string, 0, len(c.jobs))
+	for _, v := range c.jobs {
+		values = append(values, v)
+	}
+	return values
+}
+
+func (c *CronJob) Items() map[int]string {
+	c.lock.RLock()
+	defer c.lock.RUnlock()
+	items := make(map[int]string, len(c.jobs))
+	for k, v := range c.jobs {
+		items[k] = v
+	}
+	return items
+}
+
+func (c *CronJob) Clear() {
+	c.lock.Lock()
+	defer c.lock.Unlock()
+	c.jobs = make(map[int]string)
+}
+
 func (d *pgDao) TaskCronLoad() error {
+	cronJob.Clear()
 	querySql := fmt.Sprintf("SELECT distinct taskname,cron from %s.%s where export = 2;",
 		d.DB.tables.schemaName, d.DB.tables.taskInfo)
 	rows, err := d.DB.baseDB.Raw(querySql).Rows() // 使用原生sql进行查询
@@ -29,38 +98,12 @@ func (d *pgDao) TaskCronLoad() error {
 			appendCron(taskName, cron)
 		}
 	}
+	fmt.Println("cronTab:", cronJob)
 	return nil
 }
 
-func (d *pgDao) GetCronTab() map[int]string {
-	return cronTab
-}
-
-func (d *pgDao) TaskProc(taskName string) error {
-	log.Println("start to handle task:", taskName)
-
-	finNames, err := d.DB.GetTaskFins(taskName)
-	if err != nil {
-		// TODO log
-		return err
-	}
-	year, month, day := time.Now().Date()
-	// go里重定义了month类型
-	para := QueryParam{
-		OpRtime,
-		year*10000 + int(month)*100 + day,
-		year*10000 + int(month)*100 + day,
-		"",
-	}
-	for _, finName := range finNames {
-		_, err = d.GetRows(finName, para)
-		// todo cron 和 mysql dao层交互
-		if err != nil {
-			// TODO log
-			log.Println(err.Error())
-		}
-	}
-	return nil
+func (d *pgDao) GetCronJob() *CronJob {
+	return cronJob
 }
 
 /*appendCron
@@ -70,6 +113,7 @@ func (d *pgDao) TaskProc(taskName string) error {
 func appendCron(taskName string, cron string) {
 	crons := splitCron(cron)
 	for _, v := range crons {
+		cronJob.Set(v, cronJob.Get(v)+taskName+",")
 		cronTab[v] += taskName + ","
 	}
 }

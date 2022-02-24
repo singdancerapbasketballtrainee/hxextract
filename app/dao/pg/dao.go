@@ -11,7 +11,8 @@ var Provider = wire.NewSet(New, NewDB)
 type Dao interface {
 	Close()
 	GetRows(finName string, param QueryParam) (*sql.Rows, error)
-	GetCronTab() map[int]string
+	TaskCronLoad() error
+	GetCronJob() *CronJob
 	GetTableName(finName string) (string, error)
 	GetSchema(finName string) (string, error)
 	GetTableInfo(finName string) (tableName string, schemaName string, err error)
